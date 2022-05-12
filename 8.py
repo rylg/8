@@ -7,56 +7,34 @@ Original file is located at
     https://colab.research.google.com/drive/1trpt4SmlWiVzobwLV1Kcxx18vslyVq2f
 """
 
+def isPrime(num):
+    if num> 1:  
+        for n in range(2,num):  
+            if (num % n) == 0: 
+                print("Entered number is not a prime number please enter other number") 
+                return False
+        print("Entered number is prime")
+        return True
+    else:
+        return False
+
+def generate_d(e,phi):
+
+    # Generating d
+    k = 1
+    while (k *phi +1)%e!=0:
+        k=k+1
+
+    d = (k * phi + 1) // e
+    return d
+
+
 def gcd(a,b):
   if(a==0):
     return b
   else:
     return gcd(b%a,a)
 
-
-P = 53
-Q = 59
-
-
-n= P*Q # Public Key
-phi_n = (P-1) *(Q-1)
-
-
-# Generating e
-e = 2
-while e < phi_n:
-  if gcd(e, phi_n) == 1:
-    break
-  e += 1
-
-# Generating d
-k = 1
-while (k *phi_n +1)%e!=0:
-  k=k+1
-
-d = (k * phi_n + 1) // e
-
-U = [e, n] # Public key
-R = [d, n] # Private key
-
-
-t = 89
-# Encyption
-c = t**e % n
-# Decryption
-d = c**d % n
-print(c)
-print(d)
-
-# Method 2
-
-#Function to calculate 'd' by using inverse
-#   e.d = 1 mod(phi)
-def modinv(e,r):
-    for d in range(1,r):
-        if (e*d) % r == 1:
-            return d
-    return None
 
 def encrypt(m,n,e): # encrypts a single block
     c = pow(m,e,n)
@@ -86,12 +64,29 @@ def decrypt_message(c,n,d): # applies decryption
 
 if __name__=="__main__":
     print("RSA algorithm")
+    
+    # valid=False
+    flag1=False
+    while(flag1!=True):
+        #Choose a prime p
+        p=int(input("Enter prime p: "))
 
-    # p=int(input("Enter prime p: "))
-    # q=int(input("Enter prime q (other than p): "))
+        #Check if n is prime
+        if isPrime(p)==True:
+            flag1=True
+    
+    flag2=False
+    while(flag2!=True):
+        #Choose a prime p
+        q=int(input("Enter prime q (other than p): "))
 
-    p=17
-    q=23
+        #Check if n is prime
+        if isPrime(q)==True:
+            flag2=True
+    
+
+    #p=17
+    #q=23
 
     print("Choosen p: ", p)
     print("Choosen q: ", q)
@@ -106,11 +101,18 @@ if __name__=="__main__":
 
     #e=int(input("Choose 'e' s.t it is coprime with phi and in the range: "))
 
-    e=205
+    e=204
+    # Generating e
+    while e < phi:
+        if gcd(e, phi) == 1:
+           break
+        e += 1
+
 
     print("e is: ", e)
 
-    d=modinv(e,phi)
+    #d=modinv(e,phi)
+    d=generate_d(e,phi)
 
     print("d is :", d)
 
@@ -195,56 +197,45 @@ if __name__=="__main__":
 # 121
 # 2  :  50
 # 101
-
-# Method 3
-
-class RSA:
-
-  def __init__(self):
-
-    self.p = 7
-
-    self.q = 11
-
-    self.n = self.p * self.q
-
-    self.phi = (self.p - 1)*(self.q - 1)
-
-    self.e = 17
-
-    self.d = self.generate_d()
-
-  def generate_d(self):
-
-    for k in range(1, self.phi):
-
-      if(k * self.phi + 1) % self.e == 0:
-
-        return (k * self.phi + 1) // self.e
-
-    return None
-
-  def get_public_key(self):
-
-    return self.n , self.e
-
-  def encrypt(self, plaintext):
-
-    return(plaintext ** self.e) % self.n
-
-  def decrypt(self, ciphertext):
-
-    return(ciphertext ** self.d) % self.n
-
-enc = RSA()
-
-print(f'Public-Key: {enc.get_public_key()}')
-
-plaintext = 8
-
-ciphertext = enc.encrypt(plaintext)
-
-print(f"Encrypted Text: {ciphertext}")
-
-print(f"Decrypted Value: {enc.decrypt(ciphertext)}")
 # Decrypted Message:  rohan-limaye
+
+# def gcd(a,b):
+#   if(a==0):
+#     return b
+#   else:
+#     return gcd(b%a,a)
+
+
+# P = 53
+# Q = 59
+
+
+# n= P*Q # Public Key
+# phi_n = (P-1) *(Q-1)
+
+
+# # Generating e
+# e = 2
+# while e < phi_n:
+#   if gcd(e, phi_n) == 1:
+#     break
+#   e += 1
+
+# # Generating d
+# k = 1
+# while (k *phi_n +1)%e!=0:
+#   k=k+1
+
+# d = (k * phi_n + 1) // e
+
+# U = [e, n] # Public key
+# R = [d, n] # Private key
+
+
+# t = 89
+# # Encyption
+# c = t**e % n
+# # Decryption
+# d = c**d % n
+# print(c)
+# print(d)
