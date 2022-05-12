@@ -195,4 +195,56 @@ if __name__=="__main__":
 # 121
 # 2  :  50
 # 101
+
+# Method 3
+
+class RSA:
+
+  def __init__(self):
+
+    self.p = 7
+
+    self.q = 11
+
+    self.n = self.p * self.q
+
+    self.phi = (self.p - 1)*(self.q - 1)
+
+    self.e = 17
+
+    self.d = self.generate_d()
+
+  def generate_d(self):
+
+    for k in range(1, self.phi):
+
+      if(k * self.phi + 1) % self.e == 0:
+
+        return (k * self.phi + 1) // self.e
+
+    return None
+
+  def get_public_key(self):
+
+    return self.n , self.e
+
+  def encrypt(self, plaintext):
+
+    return(plaintext ** self.e) % self.n
+
+  def decrypt(self, ciphertext):
+
+    return(ciphertext ** self.d) % self.n
+
+enc = RSA()
+
+print(f'Public-Key: {enc.get_public_key()}')
+
+plaintext = 8
+
+ciphertext = enc.encrypt(plaintext)
+
+print(f"Encrypted Text: {ciphertext}")
+
+print(f"Decrypted Value: {enc.decrypt(ciphertext)}")
 # Decrypted Message:  rohan-limaye
